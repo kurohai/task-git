@@ -3,7 +3,9 @@
 
 if [ ! -e ~/.task/pending.data ];
 then
+    mkdir ${HOME}/.task
 	sudo mount -o bind "${PROJECT_HOME}/task-config" "${HOME}/.task"
+    ln -s ${HOME}/.task/.taskrc ${HOME}/.taskrc
 fi
 
 alias task='${PROJECT_HOME}/task-git/task-git.sh'
