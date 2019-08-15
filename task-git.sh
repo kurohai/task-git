@@ -6,6 +6,13 @@ TASK_COMMAND="task ${@}"
 DATA_RC=$(task _show | grep data.location)
 DATA=(${DATA_RC//=/ })
 DATA_DIR=${DATA[1]}
+
+if [ $DATA_DIR = "~/.task" ];
+then
+    echo changing data dir
+    DATA_DIR=${HOME}/.task
+fi
+
 if [ ! -d "$DATA_DIR" ]; then
   echo 'Could not load data directory!'
   exit 1
