@@ -1,4 +1,15 @@
-# task-git.sh
+# task-git.sh #
+
+## Install ##
+
+```bash
+# run this to update ~/.bashrc
+echo -en "\nsource ${PROJECT_HOME}/task-git/task-alias.sh\n" >> ~/.bashrc
+echo -en "alias task='${PROJECT_HOME}/task-git/task-git.sh'\n" >> ~/.bashrc
+source ~/.bashrc
+```
+
+## Overview ##
 
 `task-git.sh` is a wrapper around Taskwarrior's `task` that places the task
 database in version control, and generates commits each time the `task` database
