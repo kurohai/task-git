@@ -3,17 +3,23 @@
 # Get task command
 TASK_COMMAND="task ${@}"
 # Get data dir
-DATA_RC=$(task _show | grep data.location)
-DATA=(${DATA_RC//=/ })
-DATA_DIR=${DATA[1]}
-
-if [ $DATA_DIR = "~/.task" ];
+if [ -e "${TASKDATA}" ];
 then
-    echo changing data dir
+    DATA_DIR="${TASKDATA}"
+else
+
+  DATA_RC=$(task _show | grep data.location)
+  DATA=(${DATA_RC//=/ })
+  DATA_DIR=${DATA[1]}
+fi
+
+if [ "${DATA_DIR}" = "~/.task" ];
+then
+    # echo changing data dir
     DATA_DIR=${HOME}/.task
 fi
 
-if [ ! -d "$DATA_DIR" ]; then
+if [ ! -d "${DATA_DIR}" ]; then
   echo 'Could not load data directory!'
   exit 1
 fi
@@ -30,12 +36,13 @@ do
 done
 
 # Call task, commit files and push if flag is set.
-/usr/bin/task $@
-cd $DATA_DIR
+TASK_BIN=$(which task)
+eval "${TASK_BIN} $@"
+cd "${DATA_DIR}"
 git add .
-git commit -m "$TASK_COMMAND" > /dev/null
+git commit -m "${TASK_COMMAND}" > /dev/null
 
-if [ "$PUSH" == 1 ]; then
-  git push origin master > /dev/null
+if [ "${PUSH}" == 1 ]; then
+  git push > /dev/null
 fi
 exit 0
