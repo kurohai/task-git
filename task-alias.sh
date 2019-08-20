@@ -22,6 +22,7 @@ function task-pull() {
     git checkout develop
     git pull origin develop
     echo "git pull complete"
+    cd "${OLDPWD}"
 }
 
 function task-push() {
@@ -30,6 +31,7 @@ function task-push() {
     git checkout develop
     git push -u origin develop
     echo "git push complete"
+    cd "${OLDPWD}"
 }
 
 function task-sync() {
