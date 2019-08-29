@@ -1,16 +1,14 @@
 #!/usr/bin/env bash
 
 
-# if [ ! -e ~/.task/pending.data ];
-# then
-#     mkdir ${HOME}/.task
-# 	sudo mount -o bind "${PROJECT_HOME}/task-config" "${HOME}/.task"
-#     ln -s ${HOME}/.task/.taskrc ${HOME}/.taskrc
-# fi
-
 export TASKDATA=${PROJECT_HOME}/task-config
-export TASKRC=${PROJECT_HOME}/task-config/.taskrc
-# LOG_FILE=${TASKDATA}/log/task-sync-`date +%s`.log
+if [ "${USER}" = "j2v6" ];
+then
+    export TASKRC=${TASKDATA}/.taskrc-osx
+else
+    export TASKRC=${TASKDATA}/.taskrc
+fi
+
 TASK_SYNC_LOG_FILE=${TASKDATA}/log/task-sync-`date +%Y-%m-%d`.log
 TASK_SYNC_LOCK_FILE=${TASKDATA}/.sync_lock
 
@@ -19,17 +17,23 @@ then
     mkdir -p "${TASKDATA}/log"
 fi
 
-alias task='${PROJECT_HOME}/task-git/task-git.sh'
-alias task-git-push='${PROJECT_HOME}/task-git/task-git.sh --task-git-push'
-
 function t() {
     ${PROJECT_HOME}/task-git/task-git.sh $@
 }
+function task() {
+    ${PROJECT_HOME}/task-git/task-git.sh $@
+}
+function taskp() {
+    ${PROJECT_HOME}/task-git/task-git.sh --task-git-push $@
+}
+
+# alias task='${PROJECT_HOME}/task-git/task-git.sh'
+# alias task-git-push='${PROJECT_HOME}/task-git/task-git.sh --task-git-push'
 
 
 function task-pull() {
     echo "performing git pull"
-    cd ${PROJECT_HOME}/task-config/
+    cd "${TASKDATA}"
     git checkout develop
     git pull origin develop
     echo "git pull complete"
@@ -38,7 +42,7 @@ function task-pull() {
 
 function task-push() {
     echo "performing git push"
-    cd ${PROJECT_HOME}/task-config/
+    cd "${TASKDATA}"
     git checkout develop
     git push -u origin develop
     echo "git push complete"
