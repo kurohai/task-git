@@ -2,6 +2,8 @@
 
 
 export TASKDATA=${PROJECT_HOME}/task-config
+export TASKDDATA=${TASKDATA}
+
 if [ "${USER}" = "j2v6" ];
 then
     export TASKRC=${TASKDATA}/.taskrc-osx
@@ -20,9 +22,17 @@ fi
 function t() {
     ${PROJECT_HOME}/task-git/task-git.sh $@
 }
+
 function task() {
     ${PROJECT_HOME}/task-git/task-git.sh $@
 }
+
+function ts() {
+    ${PROJECT_HOME}/task-git/task-git.sh $@
+    ${PROJECT_HOME}/task-git/task-git.sh sync
+}
+
+
 function taskp() {
     ${PROJECT_HOME}/task-git/task-git.sh --task-git-push $@
 }
@@ -53,13 +63,14 @@ function task-sync() {
     if [ ! -f "${TASK_SYNC_LOCK_FILE}" ];
     then
         touch "${TASK_SYNC_LOCK_FILE}"
-        echo "starting task sync: $(date --iso-8601=seconds)"
+        echo "starting task sync: `date --iso-8601=seconds`" | tee -a "${TASK_SYNC_LOG_FILE}" 2>&1
         task-pull >> "${TASK_SYNC_LOG_FILE}" 2>&1
         task-push >> "${TASK_SYNC_LOG_FILE}" 2>&1
-        echo "task sync running"
-        unalias rm
-        rm -f "${TASK_SYNC_LOCK_FILE}"
+#        echo "task sync running"
+        unalias rm 2>/dev/null
+        rm -f "${TASK_SYNC_LOCK_FILE}" 2>/dev/null
     fi
 }
 
 task-sync &
+echo
