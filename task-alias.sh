@@ -19,23 +19,23 @@ then
     mkdir -p "${TASKDATA}/log"
 fi
 
-function t() {
-    ${PROJECT_HOME}/task-git/task-git.sh $@
-}
+#function t() {
+#    ${PROJECT_HOME}/task-git/task-git.sh $@
+#}
 
-function task() {
-    ${PROJECT_HOME}/task-git/task-git.sh $@
-}
+#function task() {
+#    ${PROJECT_HOME}/task-git/task-git.sh $@
+#}
 
 function ts() {
-    ${PROJECT_HOME}/task-git/task-git.sh $@
-    ${PROJECT_HOME}/task-git/task-git.sh sync
+#    ${PROJECT_HOME}/task-git/task-git.sh $@
+    ${PROJECT_HOME}/task-git/task-git.sh sync $@
 }
 
 
-function taskp() {
-    ${PROJECT_HOME}/task-git/task-git.sh --task-git-push $@
-}
+#function taskp() {
+#    ${PROJECT_HOME}/task-git/task-git.sh --task-git-push $@
+#}
 
 # alias task='${PROJECT_HOME}/task-git/task-git.sh'
 # alias task-git-push='${PROJECT_HOME}/task-git/task-git.sh --task-git-push'
@@ -59,18 +59,18 @@ function task-push() {
     cd "${OLDPWD}"
 }
 
-function task-sync() {
-    if [ ! -f "${TASK_SYNC_LOCK_FILE}" ];
-    then
-        touch "${TASK_SYNC_LOCK_FILE}"
-        echo "starting task sync: `date --iso-8601=seconds`" | tee -a "${TASK_SYNC_LOG_FILE}" 2>&1
-        task-pull >> "${TASK_SYNC_LOG_FILE}" 2>&1
-        task-push >> "${TASK_SYNC_LOG_FILE}" 2>&1
+#function task-sync() {
+#    if [ ! -f "${TASK_SYNC_LOCK_FILE}" ];
+#    then
+#        touch "${TASK_SYNC_LOCK_FILE}"
+#        echo "starting task sync: `date --iso-8601=seconds`" | tee -a "${TASK_SYNC_LOG_FILE}" 2>&1
+#        task-pull >> "${TASK_SYNC_LOG_FILE}" 2>&1
+#        task-push >> "${TASK_SYNC_LOG_FILE}" 2>&1
 #        echo "task sync running"
-        unalias rm 2>/dev/null
-        rm -f "${TASK_SYNC_LOCK_FILE}" 2>/dev/null
-    fi
-}
+#        unalias rm 2>/dev/null
+#        rm -f "${TASK_SYNC_LOCK_FILE}" 2>/dev/null
+#    fi
+#}
 
-task-sync &
-echo
+#task-sync &
+#echo
